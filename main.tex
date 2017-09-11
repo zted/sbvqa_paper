@@ -387,9 +387,7 @@ The goal of the main experiments were to observe how each model performs with an
 
 
 
-TextMod is trained on the original questions (\textit{OQ}), with the best performing model being selected. ASR is used on the 0-50\% variants to convert the audio question to text. Then, the selected model from \textit{OQ} is used to evaluate based on the transcribed text. Concretely, the best performing model obtained on \textit{test-dev} is used to evaluate the transcribed variants of \textit{test-dev}.
-% Typically the best model on \textit{val} is used to evaluate on \textit{test} or another `unseen' portion of the dataset. However in these experiments, the noisy, transcribed variants of the same subset are in fact unseen, because the original questions for which the model is trained and validated on contains no noise. 
-Likewise, SpeechMod is first trained on audio data with 0\% noise, with the strongest model being selected. The selected model is used to evaluate on the 10-50\% variants of the same data subset.
+TextMod is trained on the original questions (\textit{OQ}), with the best performing model being selected. ASR is used on the 0-50\% variants to convert the audio question to text. Then, the selected model from \textit{OQ} is used to evaluate based on the transcribed text. Concretely, the best performing model obtained on \textit{test-dev} is used to evaluate the transcribed variants of \textit{test-dev}. Likewise, SpeechMod is first trained on audio data with 0\% noise, with the strongest model being selected. The selected model is used to evaluate on the 10-50\% variants of the same data subset. Typically, the best model on \textit{val} is used to evaluate on \textit{test} or another `unseen' portion of the dataset. However in these experiments, the noisy variants of the same datasets are in fact unseen because the data for which the model is trained on contains no noise. We show this in the zero-shot section of the paper.
 
 
 \pgfplotsset{width=8cm,compat=1.9}
@@ -444,11 +442,6 @@ One might imagine SpeechMod to perform better because of its direct optimization
 Next, we compare TextMod and SpeechMod against their respective \textit{Blind} models. The bias of questions in \textit{VQA1.0} is well documented. Namely, if the question is understood, there is a good chance of answering correctly without looking at the image (i.e. blind guessing). For example, \textit{Y/N} questions have the answer \emph{yes} more commonly than \emph{no}, so the system should guess \emph{yes} if a question is identified to be a \textit{Y/N} type. As a reference, always answering \emph{yes} yields a \textit{Y/N} accuracy of 70.81\% on \textit{test-dev}. The bias is clearly evident in both \textit{test-dev} and \textit{val} for TextMod and SpeechMod; the \textit{Y/N} section of \textit{Blind} always performs better than that of the 0\% data. Therefore, \textit{Blind} tells us how many questions are understood by these two modes of linguistic inputs. When comparing the linguistic only models with their complementary TextMod and SpeechMod, one can be certain that performances falling below the linguistic signifies that the model no longer understands the questions. Furthermore, perceiving the image and a noisy question becomes less informative than understanding a clean question without an image.
 
 
-\subsection{Zero Shot}
-In this section zero-shot (ZS) results are analyzed to further understand the behavior of both models. ZS in the context of VQA refers to questions that were never seen in training. To get ZS data, we discard questions in \textit{val} subset that appeared in the \textit{train} subset. Doing this decreased the number of valid questions from 104,654 to 65,365.
-
-Put differently, no new models were trained; I used the same models and ran the same experiment configurations (\Cref{table:zs}, \Cref{fig:noiseplots-zs}) as reported in the previous section, except that the ZS test set is a portion of the original test set. These experiments could not be performed on \textit{test-dev} because the evaluation server does not allow partial submission of predictions. \tz{not the same, because we didn't report on val results!} \tz{also, plots show validation results}
-
 \begin{table}[t]
 \centering
 \caption{Accuracy on \textit{zero-shot} with different levels of noise added. (Higher is better)}
@@ -471,6 +464,15 @@ SpeechMod & 0\%                 & 37.01  & 65.58  & 23.19  & 12.99 \\
 \end{tabular}
 \end{table}
 
+
+\subsection{Zero-Shot}
+In this section zero-shot (ZS) results are analyzed to further understand the behavior of both models. ZS in the context of VQA refers to questions that were never seen in training. To get ZS data, we discard questions in \textit{val} subset that appeared in the \textit{train} subset, which decreased the number of valid questions from 104,654 to 65,365. Put differently, ZS is simply a subset of \textit{val}.
+
+The model was trained on the complete \textit{train}, and the best performing one on the complete \textit{val} was selected.
+We then use that model on the original and ZS datasets with noise injected (\Cref{table:zs}, \Cref{fig:noiseplots-zs}).
+These experiments were not be performed on \textit{test-dev} because the evaluation server does not process partial datasets, but the dataset provides ground truth for \textit{val}.
+
+
 \pgfplotsset{width=8cm,compat=1.9}
 \begin{figure}[t]
 \centering
@@ -486,10 +488,11 @@ SpeechMod & 0\%                 & 37.01  & 65.58  & 23.19  & 12.99 \\
     legend pos=north east,
     legend style={font=\fontsize{6}{6}\selectfont}
 ]
- 
+
 \addplot[
     color=blue,
-    mark=square,
+    mark=none,
+    dashed
     ]
     coordinates {
     ( 0,44.51)
@@ -501,7 +504,8 @@ SpeechMod & 0\%                 & 37.01  & 65.58  & 23.19  & 12.99 \\
     };
 \addplot[
     color=magenta,
-    mark=halfcircle
+    mark=none,
+    dashed
     ]
     coordinates {
     ( 0,50.69)
@@ -513,8 +517,7 @@ SpeechMod & 0\%                 & 37.01  & 65.58  & 23.19  & 12.99 \\
     };
 \addplot[
     color=blue,
-    mark=none,
-    dashed
+    mark=square
     ]
     coordinates {
     ( 0,37.01)
@@ -526,8 +529,7 @@ SpeechMod & 0\%                 & 37.01  & 65.58  & 23.19  & 12.99 \\
     };
 \addplot[
     color=magenta,
-    mark=none,
-    dashed
+    mark=halfcircle
     ]
     coordinates {
     ( 0,46.41)
@@ -537,18 +539,17 @@ SpeechMod & 0\%                 & 37.01  & 65.58  & 23.19  & 12.99 \\
     (40,37.79)
     (50,34.41)
     };
-\legend{SpeechMod, TextMod, Zero-Shot SpeechMod, Zero-Shot TextMod}
+\legend{SpeechMod \textit{val}, TextMod \textit{val}, SpeechMod ZS, TextMod ZS}
 \end{axis}
 \end{tikzpicture}
-\caption{SpeechMod and TextMod performance with varying amounts of added noise. \textit{Blind} counterparts are not tested on different noise levels.}
+\caption{SpeechMod and TextMod performance with varying amounts of added noise for ZS subset in reference to the complete datasets.}
 \label{fig:noiseplots-zs}
 \end{figure}
 
 
+As one would expect, ZS accuracies are worse than accuracies of the entire set, since models tend to perform more poorly on unseen data. TextMod performs 4\% better on the complete dataset than on the ZS, and SpeechMod on the complete dataset performs better by 7\%. The performance gap decreases as more noise is added. At 50\% noise, the performance on ZS and the original data have practically converged for both models. To the models, questions seen during the training but with high amount of noise added are as foreign as unseen questions.
 
-As one would expect, ZS accuracies are worse than accuracies of the entire set, since models tend to perform more poorly on unseen data. The overall difference in low noise settings for TextMod is roughly 4\% and 7\% in SpeechMod. The performance gap decreases as more noise is added. At 50\% noise, the performance on ZS and the original data have practically converged for both models. To the models, questions seen during the training but with high amount of noise added are as uninterpretable as unseen questions.
-
-While \textit{Y/N} and \textit{Number} type questions saw small decreases in accuracies, \textit{Other} type questions showed a 12\% decrease in TextMod and 17\% decrease in SpeechMod. This is understandable, because for \textit{Y/N} or \textit{Number} questions, there are fewer potential answers to choose from. For \textit{Y/N} questions, as long as `does ... ?', or `is ... ?' is understood, the possible answers are already limited to two. \textit{Other} type questions are answered by a wider range of responses, leading to lower probability in blind guessing answers correctly.
+% While \textit{Y/N} and \textit{Number} type questions saw small decreases in accuracies, \textit{Other} type questions showed a 12\% decrease in TextMod and 17\% decrease in SpeechMod. This is understandable, because for \textit{Y/N} or \textit{Number} questions, there are fewer potential answers to choose from. For \textit{Y/N} questions, as long as `does ... ?', or `is ... ?' is understood, the possible answers are already limited to two. \textit{Other} type questions are answered by a wider range of responses, leading to lower probability in blind guessing answers correctly.
 
 
 \subsection{Human Recordings}
@@ -642,6 +643,8 @@ Vice versa, SpeechMod does not contain explicit intermediate data standardizatio
 
 
 It is worth noting that in contrast to the characteristics of the pipelined approach, SpeechMod does not include mechanisms that forces it to learn semantics in language, and the only data it learns from is the given dataset. \tz{Change it is worth noting, this paragraph sounds a bit discussion-like} Bearing in mind its simple architecture and limited amount of data, the performance gap of 7\% between SpeechMod and TextMod is within acceptable limits and merits further study into the end-to-end methods.
+
+\tz{ZS reason why textmod is better?}
 
 \subsection{Future Work}
 
