@@ -89,9 +89,9 @@ This paper introduces speech-based visual question answering (VQA), the task of 
 
 
 \section{Introduction}
-The recent years have witnessed great advances in computer vision, natural language processing, and speech recognition thanks to the advances in deep learning \cite{lecun2015deep} and abundance of data \cite{imagenet:2015}, \cite{VQA}. This is evidenced not only by the surge of academic papers, but also by the world-wide industry interests. The convincing successes in these individual fields naturally raise the potentials of further integration towards solutions to more general AI problems. Much work has been done to integrate vision and language, resulting in a wide collection of successful applications such as image/video captioning \cite{show:tell:caption}, movie-to-book alignment \cite{align:bookmovie}, and visual question answering (VQA) \cite{VQA}. However, the importance of integrating vision and speech has remained relatively unexplored.
+The recent years have witnessed great advances in computer vision, natural language processing, and speech recognition thanks to the advances in deep learning \cite{lecun2015deep} and abundance of data \cite{imagenet:2015}. This is evidenced not only by the surge of academic papers, but also by the world-wide industry interests. The convincing successes in these individual fields naturally raise the potentials of further integration towards solutions to more general AI problems. Much work has been done to integrate vision and language, resulting in a wide collection of successful applications such as image/video captioning \cite{show:tell:caption}, movie-to-book alignment \cite{align:bookmovie}, and visual question answering (VQA) \cite{VQA}. However, the importance of integrating vision and speech has remained relatively unexplored.
 
-Pertaining to practical applications, voice-user interface (VUI) has become more commonplace, and people are increasingly taking advantage of its characteristics; it is natural, hands-free, eyes-free, far more mobile and even faster than typing on certain devices \cite{speech:faster}. As many of our daily tasks are relevant to visual scenes, there is a strong need to have a VUI to talk to pictures or videos directly, be it for communication, cooperation, or guidance. Speech-based VQA can be used to assist blind people in performing ordinary tasks, and to dictate robotics in real visual scenes in a hand-free manner such as clinical robotic surgery.
+Pertaining to practical applications, voice-user interface (VUI) has become more commonplace, and people are increasingly taking advantage of its characteristics; it is natural, hands-free, eyes-free, far more mobile and faster than typing on certain devices \cite{speech:faster}. As many of our daily tasks are relevant to visual scenes, there is a strong need to have a VUI to talk to pictures or videos directly, be it for communication, cooperation, or guidance. Speech-based VQA can be used to assist blind people in performing ordinary tasks, and to dictate robotics in real visual scenes in a hand-free manner such as clinical robotic surgery.
 
 
 %Diagram
@@ -146,9 +146,9 @@ The \textbf{main contributions} of this paper are three-fold: \textbf{1)} We int
 \subsection{Visual Question Answering}
 The initial introduction of VQA into the AI community \cite{realtime:vqa}, \cite{daquar} was motivated by a desire to build intelligent systems that can understand the world more holistically. In order to complete the task of VQA, it was both necessary to understand a textual question and a visual scene. However, it was not until the introduction of \textit{VQA1.0} \cite{VQA} that the application took mainstream in the computer vision and natural language processing (NLP) communities.
 
-Recently, popular topics of exploration have been on the development of attention models. Attention models were popularized by its success with the NLP community in machine translation \cite{nmt:joint:align}. They eventually found a place in the computer vision community in works such as \cite{recurrent:visual:attn}, \cite{dnn:selective:attn}, and \cite{show:attend:tell}. Within the context of visual question answering, attention mechanisms `show' a model where to look when answering a question. Stacked Attention Network \cite{vqa:stackedattn} learns an attention mechanism based on the of the question's encoding to determine the salient regions in an image. More sophisticated attention-centric models such as \cite{vqa:dualattn,vqa:hieco} and \cite{vqa:dynamicmemory} were since then developed.
+Recently, popular topics of exploration have been on the development of attention models. Attention models were popularized by their success with the NLP community in machine translation \cite{nmt:joint:align}, and quickly demonstrated their efficacy in computer vision \cite{recurrent:visual:attn}. Within the context of visual question answering, attention mechanisms `show' a model where to look when answering a question. Stacked Attention Network \cite{vqa:stackedattn} learns an attention mechanism based on the of the question's encoding to determine the salient regions in an image. More sophisticated attention-centric models such as \cite{vqa:dualattn,vqa:hieco,vqa:dynamicmemory} were since then developed.
 
-Other points of research are based on the pooling mechanism that combines the language component with the vision components. Many models \cite{vqa:spatial:attn} \cite{vqa:simp} \cite{vqa:stackedattn} use an element-wise multiplication to pool these modalities, \cite{vqa:hieco} and Fukui et al. \cite{multimodal:pooling} have shown much success in using more complex methods. Our work differs from theirs in that we do not try to improve the performance of the VQA model by adding attention mechanisms or augmenting the pooling techniques.
+Other points of research are based on the pooling mechanism that combines the language component with the vision components. Some use an element-wise multiplication \cite{vqa:spatial:attn,vqa:stackedattn} to pool these modalities, while \cite{vqa:hieco} and \cite{multimodal:pooling} have shown much success in using more complex methods. Our work differs from theirs in that we do not try to improve the performance of the VQA model by adding attention mechanisms or augmenting the pooling techniques.
 
 
 \subsection{Integration of Speech and Vision}
@@ -159,7 +159,7 @@ commands to guide image processing and semantic segmentation. There is also acad
 Our work also shares similarity with visual-grounded speech understanding or recognition. The closest one in this vein is \cite{speech:caption}, in which a deep model is learned with speeches about image captions for speech-based image retrieval. In a broader context of integration of sound and vision, Soundnet \cite{soundnet} transfers visual information into sound representations, but this differs from our work because their end goal is to label a sound.
 
 \subsection{End-To-End Speech Recognition}
-In the past decade, deep learning has allowed many fields in artificial intelligence to replace traditional hand-crafted features and pipeline systems with end-to-end models. Since speech recognition is typically thought of as a sequence to sequence transduction problem, i.e. given an input sequence, predict an output sequence, the application of LSTM and the CTC \cite{rnn:discrimspotting}, \cite{ctc} promptly showed the success needed to justify its superiority over traditional methods. Current state of the art ASR systems such as DeepSpeech2 \cite{deepspeech2} uses stacked Bi-directional Recurrent Neural Networks (RNNs) in conjunction with Convolutional Neural networks (CNNs) because these deep neural architectures all share the property of being able to perform back propagation. \tz{A few sentences about the diff between speech recognition and our task, justifying why we don't need to use the speech recognition architecture} While our work does not attempt sequence to sequence prediction nor make use of CTCs, our approach and the integration of speech with vision is nevertheless made possible by the same underlying principle of the works listed above. \tz{delete this sentence?}
+In the past decade, deep learning has allowed many fields in artificial intelligence to replace traditional hand-crafted features and pipeline systems with end-to-end models. Since speech recognition is typically thought of as a sequence to sequence transduction problem, i.e. given an input sequence, predict an output sequence, the application of LSTM and the CTC \cite{rnn:discrimspotting,ctc} promptly showed the success needed to justify its superiority over traditional methods. Current state of the art ASR systems such as DeepSpeech2 \cite{deepspeech2} uses stacked Bi-directional Recurrent Neural Networks (RNNs) in conjunction with Convolutional Neural networks (CNNs) because these deep neural architectures all share the property of being able to perform back propagation. \tz{A few sentences about the diff between speech recognition and our task, justifying why we don't need to use the speech recognition architecture} While our work does not attempt sequence to sequence prediction nor make use of CTCs, our approach and the integration of speech with vision is nevertheless made possible by the same underlying principle of the works listed above. \tz{delete this sentence?}
 
 
 % Conv dimensions table
@@ -249,7 +249,7 @@ empty/.style={rectangle, very thick, minimum size=5mm},
 
 
 \section{Model}
-Two models are employed in this work, they will be referred to henceforth as TextMod and SpeechMod. TextMod and SpeechMod only differ in their language components, keeping rest of the architecture the same. On the language side, TextMod takes as input a series of one-hot encodings, followed by an embedding layer that is learned from scratch, a LSTM encoder, and a dense layer. It is similar to \cite{VQA} with some minor adjustments.
+Two models are employed in this work, they will be referred to henceforth as TextMod and SpeechMod. TextMod and SpeechMod only differ in their language components, keeping rest of the architecture the same. On the language side, TextMod takes as input a series of one-hot encodings, followed by an embedding layer that is learned from scratch, a LSTM encoder, and a dense layer. It is similar to \textit{VQA1.0} with some minor adjustments.
 
 The language side of SpeechMod takes as input the raw waveform, and pushes it through a series of 1D convolutions. After the CNN layers follows a LSTM. The LSTM serves the same purpose as in TextMod, which is to interpret and encode the sequence meaningfully into a single vector.
 
@@ -468,9 +468,7 @@ SpeechMod & 0\%                 & 37.01  & 65.58  & 23.19  & 12.99 \\
 \subsection{Zero-Shot}
 In this section zero-shot (ZS) results are analyzed to further understand the behavior of both models. ZS in the context of VQA refers to questions that were never seen in training. To get ZS data, we discard questions in \textit{val} subset that appeared in the \textit{train} subset, which decreased the number of valid questions from 104,654 to 65,365. Put differently, ZS is simply a subset of \textit{val}.
 
-The model was trained on the complete \textit{train}, and the best performing one on the complete \textit{val} was selected.
-We then use that model on the original and ZS datasets with noise injected (\Cref{table:zs}, \Cref{fig:noiseplots-zs}).
-These experiments were not be performed on \textit{test-dev} because the evaluation server does not process partial datasets, but the dataset provides ground truth for \textit{val}.
+The models were trained on the complete \textit{train}, and best performing on the complete \textit{val} were selected. Next, the models were tested on the original and ZS datasets with noise injected (\Cref{table:zs}, \Cref{fig:noiseplots-zs}). These experiments were not be performed on \textit{test-dev} because the ground truth from \textit{test-dev} and \textit{test} are withheld and cannot be evaluated partially on the server.
 
 
 \pgfplotsset{width=8cm,compat=1.9}
@@ -547,78 +545,10 @@ These experiments were not be performed on \textit{test-dev} because the evaluat
 \end{figure}
 
 
-As one would expect, ZS accuracies are worse than accuracies of the entire set, since models tend to perform more poorly on unseen data. TextMod performs 4\% better on the complete dataset than on the ZS, and SpeechMod on the complete dataset performs better by 7\%. The performance gap decreases as more noise is added. At 50\% noise, the performance on ZS and the original data have practically converged for both models. To the models, questions seen during the training but with high amount of noise added are as foreign as unseen questions.
+As one would expect, ZS accuracies are worse than accuracies of the entire set, since models tend to perform more poorly on unseen data. TextMod performs 4\% better on the complete dataset than on the ZS, and SpeechMod on the complete dataset performs better by 7\%. The performance gap decreases as more noise is added. At 50\% noise, the performance on ZS and the original data have practically converged for both models. To the models, questions seen during the training but with high amount of noise added are as foreign as unseen questions. \tz{explain why textmod does better on ZS?}
 
 % While \textit{Y/N} and \textit{Number} type questions saw small decreases in accuracies, \textit{Other} type questions showed a 12\% decrease in TextMod and 17\% decrease in SpeechMod. This is understandable, because for \textit{Y/N} or \textit{Number} questions, there are fewer potential answers to choose from. For \textit{Y/N} questions, as long as `does ... ?', or `is ... ?' is understood, the possible answers are already limited to two. \textit{Other} type questions are answered by a wider range of responses, leading to lower probability in blind guessing answers correctly.
 
-
-\subsection{Human Recordings}
-Finally, a small, supplementary test is run on non-synthetic, human generated questions to see if the models would perform differently on real-world audio inputs. The results are shown in \Cref{table:recorded}. The 1000 samples were randomly selected from the \textit{val} set, since ground truth from the \textit{test-dev} and \textit{test} are withheld and cannot be evaluated partially on the server. The models were trained on \textit{train}, and the highest performing on \textit{val} is used for evaluation on the 1000 samples. For reference, the word error rate when transcribing this subset is 38.26\%.
-
-
-\begin{figure*}[t]
-$\begin{tabular}{cccc}
-\includegraphics[width=0.24\linewidth, height=30mm]{images/howmany.jpg}
-& \hspace{-3mm}
-\includegraphics[width=0.24\linewidth, height=30mm]{images/lean.jpg}
-& \hspace{-3mm}
-\includegraphics[width=0.24\linewidth, height=30mm]{images/spanish.jpg}
-& \hspace{-3mm}
-\includegraphics[width=0.24\linewidth, height=30mm]{images/teddy.jpg}
-
-\\
-\vspace{-3mm}
-\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
-how many people are in this photo? 
-\end{tcolorbox}
-%}
-& \hspace{-3mm}
-\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
-what is leaning against the house?
-\end{tcolorbox}
-%}
-& \hspace{-3mm}
-%\multirow{ 2}{*}{
-\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
-is this a spanish town?
-\end{tcolorbox} 
-& \hspace{-3mm}
-\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
-what is the teddy bear sitting on? 
-\end{tcolorbox}  \\
-
-\vspace{-5mm}
-\\
-\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
- TextMod \ityping: {\color{blue} 2} \\
- SpeechMod \ispeaking: {\color{blue} 2} 
-\end{tcolorbox}
-%}
-& \hspace{-3mm}
-\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
-TextMod \ityping: {\color{red} yes} \\
-SpeechMod \ispeaking: {\color{red} chair} 
-\end{tcolorbox}
-%}
-& \hspace{-3mm}
-%\multirow{ 2}{*}{
-\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
-TextMod \ityping: {\color{red} no} \\
-SpeechMod \ispeaking: {\color{blue} yes} 
-\end{tcolorbox} 
-& \hspace{-3mm}
-\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
-TextMod \ityping: {\color{blue} chair} \\
-SpeechMod \ispeaking: {\color{red} yes} 
-\end{tcolorbox}  \\
-\end{tabular}$
-\vspace{-4mm}
-\caption{Example of speech-based VQA answers. Correct answers in blue and incorrect in red.}  
-\label{fig:visual:examples} 
-\end{figure*}
-
-
-Although small in sample size, the human-recorded dataset provides a few insights. For SpeechMod, the performance on synthetic data serves as the upper bound and for TextMod, the performance on the original text also serves the upper bound. Although it is clear that both models have difficulties handling non-synthetic audio inputs, SpeechMod performs especially poorly. The synthetic audio sounds monotonous, disinterested, with little silence in between words while the human recorded audio has inflections, emphasis, accents, and pauses. An inspection of the spectrograms (\Cref{fig:specs}) confirms this, as the synthetic waveforms contain have vastly different audio signatures. From the perspective of TextMod, the human-recorded inputs seem completely different than those it was trained on. Because SpeechMod uses the waveforms as input directly and it has no training data similar to the human recorded samples, during prediction time it is unable to find salient patterns in the audio clips. By comparison, the pipelined approach has an ASR that is already trained with data containing lots of variance, so it is able to standardize the audio into a compact, salient textual representation before feeding it into TextMod. From the perspective of TextMod, its linguistic input is only slightly different than the original text it was trained on.
 
 
 % Human recorded questions
@@ -636,8 +566,77 @@ TextMod (Original Text) & 53.09 & 77.73 & 41.54  & 38.26
 \end{table}
 
 
+\subsection{Human Recordings}
+Finally, a small, supplementary test is run on non-synthetic, human recorded questions to see if the models would perform differently on real-world audio inputs. 1000 samples were randomly selected from \textit{val}, and the best performing models from the ZS section were used for evaluation. \Cref{table:recorded} shows the performance on the synthetic and human recorded versions of this subset.
+
+
+\begin{figure*}[t]
+$\begin{tabular}{cccc}
+\includegraphics[width=0.24\linewidth, height=30mm]{images/howmany.jpg}
+& \hspace{-3mm}
+\includegraphics[width=0.24\linewidth, height=30mm]{images/lean.jpg}
+& \hspace{-3mm}
+\includegraphics[width=0.24\linewidth, height=30mm]{images/table.jpg}
+& \hspace{-3mm}
+\includegraphics[width=0.24\linewidth, height=30mm]{images/teddy.jpg}
+
+\\
+\vspace{-3mm}
+\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
+how many people are in this photo? 
+\end{tcolorbox}
+%}
+& \hspace{-3mm}
+\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
+what is leaning against the house?
+\end{tcolorbox}
+%}
+& \hspace{-3mm}
+%\multirow{ 2}{*}{
+\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
+what has been upcycled to make lights?
+\end{tcolorbox} 
+& \hspace{-3mm}
+\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
+what is the teddy bear sitting on? 
+\end{tcolorbox}  \\
+
+\vspace{-5mm}
+\\
+\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
+ TextMod \ityping: {\color{blue} 2} \\
+ SpeechMod \ispeaking: {\color{blue} 2} 
+\end{tcolorbox}
+%}
+& \hspace{-3mm}
+\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
+TextMod \ityping: {\color{red} tree} \\
+SpeechMod \ispeaking: {\color{red} chair} 
+\end{tcolorbox}
+%}
+& \hspace{-3mm}
+%\multirow{ 2}{*}{
+\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
+TextMod \ityping: {\color{red} bulb} \\
+SpeechMod \ispeaking: {\color{red} bulb} 
+\end{tcolorbox} 
+& \hspace{-3mm}
+\begin{tcolorbox}[width=0.24\linewidth, left=1pt,right=1pt,top=0pt,bottom=0pt]
+TextMod \ityping: {\color{blue} chair} \\
+SpeechMod \ispeaking: {\color{red} yes} 
+\end{tcolorbox}  \\
+\end{tabular}$
+\vspace{-4mm}
+\caption{Example of speech-based VQA answers. Correct answers in blue and incorrect in red.}  
+\label{fig:visual:examples} 
+\end{figure*}
+
+
+Although it is clear that both models have difficulties handling recorded questions, SpeechMod performs especially poorly. TextMod on the synthetic dataset achieves similar accuracy as it does on \textit{val} and \textit{test-dev} with 40\% noise. SpeechMod however, gets similar performance as the synthetic data with 50\% noise on only the \textit{Y/N} questions, while it seems to understand none of the other question types.
+
+
 \subsection{Discussion}
-As a modality, speech contains more information than text. In the process of reducing the high-dimensional audio inputs to the low-dimensional class output label (i.e. the answer), the best performing system must be the one that extracts patterns most effectively (provided there are such patterns in the data). TextMod relies heavily on the intermediate ASR system, which is more complicated than the entire architecture of SpeechMod, as the number of parameters one needs to learn for speech recognition is also much greater. The Kaldi ASR model used is a DNN-HMM model as explained in a previous section, and has been been trained on many times more data than contained in \textit{VQA1.0}. The ASR serves to filter out noise in high dimensions and extract meaningful patterns in the form of text. In that sense, one can think of text as an explicit intermediate standardization of data before the question answering module. 
+As a modality, speech contains more information than text. In the process of reducing the high-dimensional audio inputs to the low-dimensional class output label (i.e. the answer), the best performing system must be the one that extracts patterns most effectively (provided there are such patterns in the data). TextMod relies heavily on the intermediate ASR system, which is more complicated than the entire architecture of SpeechMod, as the number of parameters one needs to learn for speech recognition is also much greater. The Kaldi ASR has been been trained on many times more data than contained in \textit{VQA1.0}. The ASR serves to filter out noise in high dimensions and extract meaningful patterns in the form of text. In that sense, one can think of text as an explicit intermediate standardization of data before the question answering module.
 
 Vice versa, SpeechMod does not contain explicit intermediate data standardization, so the model may not learn to extract the concept of words from audio sounds. Whether or not humans understand speech by first transforming it to words then interpreting the meaning of words is debatable. I am of the opinion that at the very least, humans first transform speech into composable concepts, whether the concepts are in the form of words, clauses, or perhaps other latent structures. An intuitive example of this is how toddlers first learn to speak. They initially speak in short utterances, gradually build up to babble incoherent sentences, and lastly learn the grammatical structure of language. Unfortunately, it is not possible to meaningfully examine the patterns learned by SpeechMod. For visual pattern recognition, 2-D CNN layers can be easily and intuitively inspected via their weights, but there are no reliable methods (at the time of writing) to visualize 1-D CNN layers when the inputs are waveforms. In summary, from the results we conclude that indirect as it may be, using ASR to obtain text first is more useful and informative than the end-to-end approach. \tz{work on this paragraph, maybe it can be combined with the following}
 
@@ -646,14 +645,22 @@ It is worth noting that in contrast to the characteristics of the pipelined appr
 
 \tz{ZS reason why textmod is better?}
 
+Despite its limited sample size, the human-recorded dataset provides a few insights. The synthetic audio sounds monotonous, disinterested, with little silence in between words while the human recorded audio has inflections, emphasis, accents, and pauses. An inspection of the spectrograms (\Cref{fig:specs}) confirms this, as the synthetic waveforms contain have vastly different audio signatures. Because SpeechMod uses the waveforms as input directly and it has no training data similar to the human recorded samples, during prediction time it is unable to find salient patterns in the audio clips. By comparison, the pipelined approach has an ASR that is already trained with data containing lots of variance, so it is able to standardize the audio into a compact, salient textual representation before feeding it into TextMod. From the perspective of the text-based question answering system, its linguistic input is only slightly different than the original text it was trained on.
+
+\tz{the same VQA paper is cited three times!!!}
+
+
 \subsection{Future Work}
 
 One straightforward approach to improving the end-to-end model is by data augmentation. It is widely accepted that effectiveness of neural architectures is data driven, so training with noisy data and different speakers will make the model more robust to inputs during run time. Just as many possibilities exist in improving the architecture. One can add feature extractors, attention mechanisms, or any amalgamation of the techniques in the deep learning mainstream.
+
+\tz{multiple speakers, more data}
 
 \section{Conclusion}
 
 We propose speech-based visual question answering and introduce two approaches that tackle this problem, one of which can be trained end-to-end on audio inputs. Despite its simple architecture, the end-to-end method works well when the test data has audio signatures comparable to its training data. Both methods suffer performance decreases at similar rates when noise is introduced. A pipelined method using an ASR tolerates varied inputs much better because it normalizes the input variance into text before running the VQA module. We release the speech dataset and invite the multimedia research community to explore the intersection of speech and vision.
 
+\newpage
 \bibliographystyle{aaai}
 \bibliography{sigproc} 
 
