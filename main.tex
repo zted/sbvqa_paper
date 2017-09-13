@@ -48,15 +48,9 @@
 \newcommand{\tz}[1]{\textcolor{purple}{\textit{#1}}}
 \begin{document}
 \title{Speech-Based Visual Question Answering}
-%%% Commented out for Arxiv submission
-%\titlenote{Produces the permission block, and
-%  copyright information}
-%\subtitlenote{The full version of the author's guide is available as
-%  \texttt{acmart.pdf} document}
-
-\author{Ted Zhang\\
-KU Leuven\\
-tedz.cs@gmail.com}
+% \author{Ted Zhang\\
+% KU Leuven\\
+% tedz.cs@gmail.com}
 
 % \author{Dengxin Dai}
 % \affiliation{%
@@ -83,8 +77,7 @@ tedz.cs@gmail.com}
 % \email{vangool@vision.ee.ethz.ch}
 \maketitle
 \begin{abstract}
-This paper introduces speech-based visual question answering (VQA), the task of generating an answer given an image and a spoken question. Our work is the first study of speech-based VQA with the intention of providing insights for applications such as speech-based virtual assistants. Two methods are studied: an end to end, deep neural network that directly uses audio waveforms as input versus a pipelined approach that performs ASR (Automatic Speech Recognition) on the question, followed by text-based visual question answering. Our main findings are 1) speech-based VQA achieves slightly worse results than the extensively-studied VQA with noise-free text and 2) the end-to-end model is competitive even though it has a simple architecture. Furthermore, we investigate the robustness of both methods by injecting various levels of noise into the spoken question and find both methods to be tolerate noise at similar levels.
-\tz{DO NOT USE LONGCITE EVERYWHERE}
+This paper introduces speech-based visual question answering (VQA), the task of generating an answer given an image and a spoken question. Two methods are studied: an end-to-end, deep neural network that directly uses audio waveforms as input versus a pipelined approach that performs ASR (Automatic Speech Recognition) on the question, followed by text-based visual question answering. Furthermore, we investigate the robustness of both methods by injecting various levels of noise into the spoken question and find both methods to be tolerate noise at similar levels.
 \end{abstract}
 
 
@@ -129,26 +122,23 @@ empty/.style={rectangle, very thick, minimum size=7mm},
 \draw[->] (model2.east) -- (answer2.west);
 
 \end{tikzpicture}
-\caption{An example of speech-based visual question answering and the two method in this study. A spoken question \emph{what food is this?} is asked about the picture, and the system is expected to generate the answer \emph{pizza}. TextMod uses a pipelined approach with ASR to retrieve the text first, while SpeechMod utilizes audio inputs directly.}
+\caption{An example of speech-based visual question answering and the two method in this study. A spoken question \emph{what food is this?} is asked about the picture, and the system is expected to generate the answer \emph{pizza}.}
 \label{fig:models}
 \end{figure}
 
-This work investigates the potential of integrating vision and speech in the context of VQA. A spoken version of the \textit{VQA1.0} dataset is generated to study two different methods of speech-based question answering. One method is an end-to-end approach based on a deep neural network architecture, and the other uses an ASR to first transcribe the text from the spoken question, as shown in \Cref{fig:models}. The former approach is particularly useful for languages that are not serviced by popular ASR systems, i.e. minor languages that have scarce text-speech aligned training data.
+This work investigates the potential of integrating vision and speech in the context of VQA. A spoken version of the \textit{VQA1.0} dataset is generated to study two different methods of speech-based question answering. One method is an end-to-end approach based on a deep neural network architecture, and the other uses an ASR to first transcribe the text from the spoken question, as shown in \Cref{fig:models}. The former approach can be particularly useful for languages that are not serviced by popular ASR systems, i.e. minor languages that have scarce text-speech aligned training data.
 
-The \textbf{main contributions} of this paper are three-fold: \textbf{1)} We introduce an end-to-end model that directly produces answers from auditory input, without transformations into intermediate pre-learned representations, and compare this with a pipelined approach that first converts speech to text. \textbf{2)} We inspect the performance impact of having different levels of background noise mixed with the original utterances. \textbf{3)} We release the speech dataset, roughly 200 hours of synthetic audio data and 1 hour of real speech data, to the public.~\footnote{http://data.vision.ee.ethz.ch/daid/VQA/SpeechVQA.zip}
+The \textbf{main contributions} of this paper are three-fold: \textbf{1)} We introduce an end-to-end model that directly produces answers from auditory input without transformations into intermediate pre-learned representations, and compare this with the pipelined approach. \textbf{2)} We inspect the performance impact of having different levels of background noise mixed with the original utterances. \textbf{3)} We release the speech dataset, roughly 200 hours of synthetic audio data and 1 hour of real speech data, to the public.~\footnote{http://data.vision.ee.ethz.ch/daid/VQA/SpeechVQA.zip} The emphasis of this paper is not on achieving state of the art numbers on VQA, but rather on exploring ways to address a new and challenging task.
 
-% To be certain, readers will notice that our models are simple. The emphasis of this paper is not on achieving the best performance for either the end-to-end nor the pipelined approach. Rather, it is to provide a baseline, to induct speech-based visual question answering into the multimedia research domain, and to provide some insights in this topic. \tz{reviewers doesn't seem to think we provided insights, perhaps rethink this paragraph}
 
 \section{Related Works}
-% \tz{remove?}
-% Our work is generally relevant to visual question answering, the integration of vision and speech, and end-to-end speech recognition.
 
 \subsection{Visual Question Answering}
 The initial introduction of VQA into the AI community \cite{realtime:vqa}, \cite{daquar} was motivated by a desire to build intelligent systems that can understand the world more holistically. In order to complete the task of VQA, it was both necessary to understand a textual question and a visual scene. However, it was not until the introduction of \textit{VQA1.0} \cite{VQA} that the application took mainstream in the computer vision and natural language processing (NLP) communities.
 
 Recently, popular topics of exploration have been on the development of attention models. Attention models were popularized by their success with the NLP community in machine translation \cite{nmt:joint:align}, and quickly demonstrated their efficacy in computer vision \cite{recurrent:visual:attn}. Within the context of visual question answering, attention mechanisms `show' a model where to look when answering a question. Stacked Attention Network \cite{vqa:stackedattn} learns an attention mechanism based on the of the question's encoding to determine the salient regions in an image. More sophisticated attention-centric models such as \cite{vqa:dualattn,vqa:hieco,vqa:dynamicmemory} were since then developed.
 
-Other points of research are based on the pooling mechanism that combines the language component with the vision components. Some use an element-wise multiplication \cite{vqa:spatial:attn,vqa:stackedattn} to pool these modalities, while \cite{vqa:hieco} and \cite{multimodal:pooling} have shown much success in using more complex methods. Our work differs from theirs in that we do not try to improve the performance of the VQA model by adding attention mechanisms or augmenting the pooling techniques.
+Other points of research are based on the pooling mechanism that combines the language component with the vision components. Some use an element-wise multiplication \cite{vqa:spatial:attn,vqa:stackedattn} to pool these modalities, while \cite{vqa:hieco} and \cite{multimodal:pooling} have shown much success in using more complex methods. Our work differs from theirs in that we aim not to improve the performance of VQA, but rather add a new modality of input and introduce appropriate new methods.
 
 
 \subsection{Integration of Speech and Vision}
@@ -156,10 +146,10 @@ The works also relevant to ours are those integrating speech and vision. Pixelto
 and Image spirit \cite{image:spirit} are examples that use voice
 commands to guide image processing and semantic segmentation. There is also academic work \cite{show:tell} \cite{speech:anno:img} \cite{speech:retri:img} and an app \cite{smile} that use speech to provide image descriptions. Their tasks and algorithms are both different from ours. We study the potential of integrating speech and vision in the context of VQA and aim to learn a joint understanding of speech and vision. Those approaches, however, use speech recognition for data collection or result refinement.
 
-Our work also shares similarity with visual-grounded speech understanding or recognition. The closest one in this vein is \cite{speech:caption}, in which a deep model is learned with speeches about image captions for speech-based image retrieval. In a broader context of integration of sound and vision, Soundnet \cite{soundnet} transfers visual information into sound representations, but this differs from our work because their end goal is to label a sound.
+Our work also shares similarity with visual-grounded speech understanding or recognition. The closest one in this vein is \cite{speech:caption}, in which a deep model is learned with speeches about image captions for speech-based image retrieval. In a broader context of integration of sound and vision, Soundnet \cite{soundnet} transfers visual information into sound representations, but this differs from our work because their end goal is to label a sound, not to answer a question.
 
 \subsection{End-To-End Speech Recognition}
-In the past decade, deep learning has allowed many fields in artificial intelligence to replace traditional hand-crafted features and pipeline systems with end-to-end models. Since speech recognition is typically thought of as a sequence to sequence transduction problem, i.e. given an input sequence, predict an output sequence, the application of LSTM and the CTC \cite{rnn:discrimspotting,ctc} promptly showed the success needed to justify its superiority over traditional methods. Current state of the art ASR systems such as DeepSpeech2 \cite{deepspeech2} uses stacked Bi-directional Recurrent Neural Networks (RNNs) in conjunction with Convolutional Neural networks (CNNs) because these deep neural architectures all share the property of being able to perform back propagation. \tz{A few sentences about the diff between speech recognition and our task, justifying why we don't need to use the speech recognition architecture} While our work does not attempt sequence to sequence prediction nor make use of CTCs, our approach and the integration of speech with vision is nevertheless made possible by the same underlying principle of the works listed above. \tz{delete this sentence?}
+In the past decade, deep learning has allowed many fields in artificial intelligence to replace traditional hand-crafted features and pipeline systems with end-to-end models. Since speech recognition is typically thought of as a sequence to sequence transduction problem, i.e. given an input sequence, predict an output sequence, the application of LSTM and the CTC \cite{rnn:discrimspotting,ctc} promptly showed the success needed to justify its superiority over traditional methods. Current state of the art ASR systems such as DeepSpeech2 \cite{deepspeech2} uses stacked Bi-directional Recurrent Neural Networks in conjunction with Convolutional Neural networks. Our model is similar to theirs in that we use CNNs connected with an LSTM to process audio inputs, however our goal is question answering and not speech recognition.
 
 
 % Conv dimensions table
@@ -179,7 +169,7 @@ Output Dim    & 16,000                      & 4,000                       & 2,00
 
 
 %Model Architecture
-\begin{figure}[!th]
+\begin{figure}[!t]
 \centering
 \begin{tikzpicture}[
 inps/.style={rectangle, draw=black!60, very thick, minimum size=10mm},
@@ -257,7 +247,7 @@ Convolution layers are used to encode waveforms because they reduce dimensionali
 
 On the visual side, both models ingest as input the 4,096 dimensional vector of the last layer of VGG19 \cite{vgg16} followed by a single dense layer. After both visual and linguistic representations are computed, they are merged using element-wise multiplication, a dense layer, and an output layer. The full architecture of both these models are seen in \Cref{fig:modarc}, where $\displaystyle\odot$ is the symbol for element-wise multiplication. After merging the language and visual components of each model, two dense layers are stacked. The last dense layer outputs a probability distribution over the number of output classes, and the answer corresponding to the element with the highest probability is selected.
 
-The architectures presented in this chapter were chosen for two main reasons: simplicity and similarity. First, the intention is to keep the model complexity low. In order to establish a baseline for speech-based VQA, it is necessary to use only the bare minimum components. TextMod, as mentioned before, is similar to the original VQA baseline, which is well referenced and remains the simplest architecture on \textit{VQA1.0}. Despite its many convolution layers, SpeechMod also uses minimal components. Second, it is important that TextMod and SpeechMod differ from each other as little as possible. Similarity between models allows one to locate the source of discrepancies and helps produce a more rigorous comparison. The only difference in the two models is replacing an embedding layer with a series of convolution layers. In our implementation, the layers that are common between the two models also have same dimensions.
+The architectures presented in this chapter were chosen for two main reasons: simplicity and similarity. First, the intention is to keep the model complexity low. In order to establish a baseline for speech-based VQA, it is necessary to use only the bare minimum components. TextMod, as mentioned before, is similar to the original VQA baseline, which is well referenced and remains the simplest architecture on \textit{VQA1.0}. Despite its many convolution layers, SpeechMod also uses minimal components. Second, it is important that TextMod and SpeechMod differ from each other as little as possible. Similarity between models allows one to locate the source of discrepancies and helps produce a more rigorous comparison. The only difference in the two models is replacing an embedding layer with a series of convolution layers. In our implementation, the layers that are common between the two models also have the same dimensions.
 
 
 \section{Data}
@@ -545,16 +535,13 @@ The models were trained on the complete \textit{train}, and best performing on t
 \end{figure}
 
 
-As one would expect, ZS accuracies are worse than accuracies of the entire set, since models tend to perform more poorly on unseen data. TextMod performs 4\% better on the complete dataset than on the ZS, and SpeechMod on the complete dataset performs better by 7\%. The performance gap decreases as more noise is added. At 50\% noise, the performance on ZS and the original data have practically converged for both models. To the models, questions seen during the training but with high amount of noise added are as foreign as unseen questions. \tz{explain why textmod does better on ZS?}
-
-% While \textit{Y/N} and \textit{Number} type questions saw small decreases in accuracies, \textit{Other} type questions showed a 12\% decrease in TextMod and 17\% decrease in SpeechMod. This is understandable, because for \textit{Y/N} or \textit{Number} questions, there are fewer potential answers to choose from. For \textit{Y/N} questions, as long as `does ... ?', or `is ... ?' is understood, the possible answers are already limited to two. \textit{Other} type questions are answered by a wider range of responses, leading to lower probability in blind guessing answers correctly.
+As one would expect, ZS accuracies are worse than accuracies of the entire set, since models tend to perform more poorly on unseen data. TextMod performs 4\% better on the complete dataset than on the ZS, and SpeechMod on the complete dataset performs better by 7\%. The performance gap decreases as more noise is added. At 50\% noise, the performance on ZS and the original data have practically converged for both models. To the models, questions seen during the training but with high amount of noise added are as foreign as unseen questions. 
 
 
-
-% Human recorded questions
+% human-recorded questions
 \begin{table}[t]
 \centering
-\caption{Performance on 1000 human recorded questions.}
+\caption{Performance on 1000 human-recorded questions.}
 \label{table:recorded}
 \begin{tabular}{l|cccc}
                         & All   & Y/N   & Number & Other \\ \hline
@@ -567,7 +554,7 @@ TextMod (Original Text) & 53.09 & 77.73 & 41.54  & 38.26
 
 
 \subsection{Human Recordings}
-Finally, a small, supplementary test is run on non-synthetic, human recorded questions to see if the models would perform differently on real-world audio inputs. 1000 samples were randomly selected from \textit{val}, and the best performing models from the ZS section were used for evaluation. \Cref{table:recorded} shows the performance on the synthetic and human recorded versions of this subset.
+Finally, a small, supplementary test is run on non-synthetic, human-recorded questions to see if the models would perform differently on real-world audio inputs. 1000 samples were randomly selected from \textit{val}, and the best performing models from the ZS section were used for evaluation. \Cref{table:recorded} shows the performance on the synthetic and human-recorded versions of this subset.
 
 
 \begin{figure*}[t]
@@ -636,29 +623,29 @@ Although it is clear that both models have difficulties handling recorded questi
 
 
 \subsection{Discussion}
-As a modality, speech contains more information than text. In the process of reducing the high-dimensional audio inputs to the low-dimensional class output label (i.e. the answer), the best performing system must be the one that extracts patterns most effectively (provided there are such patterns in the data). TextMod relies heavily on the intermediate ASR system, which is more complicated than the entire architecture of SpeechMod, as the number of parameters one needs to learn for speech recognition is also much greater. The Kaldi ASR has been been trained on many times more data than contained in \textit{VQA1.0}. The ASR serves to filter out noise in high dimensions and extract meaningful patterns in the form of text. In that sense, one can think of text as an explicit intermediate standardization of data before the question answering module.
 
-Vice versa, SpeechMod does not contain explicit intermediate data standardization, so the model may not learn to extract the concept of words from audio sounds. Whether or not humans understand speech by first transforming it to words then interpreting the meaning of words is debatable. I am of the opinion that at the very least, humans first transform speech into composable concepts, whether the concepts are in the form of words, clauses, or perhaps other latent structures. An intuitive example of this is how toddlers first learn to speak. They initially speak in short utterances, gradually build up to babble incoherent sentences, and lastly learn the grammatical structure of language. Unfortunately, it is not possible to meaningfully examine the patterns learned by SpeechMod. For visual pattern recognition, 2-D CNN layers can be easily and intuitively inspected via their weights, but there are no reliable methods (at the time of writing) to visualize 1-D CNN layers when the inputs are waveforms. In summary, from the results we conclude that indirect as it may be, using ASR to obtain text first is more useful and informative than the end-to-end approach. \tz{work on this paragraph, maybe it can be combined with the following}
+As a modality, speech contains more information than text. In the process of reducing the high-dimensional audio inputs to the low-dimensional class output label (i.e. the answer), the best performing system must be that which extracts patterns most effectively.
 
+TextMod relies heavily on the intermediate ASR system, which is more complicated than the entire architecture of SpeechMod, as the number of parameters one needs to learn for speech recognition is also much greater. The Kaldi model has also been trained on many times more data than contained in \textit{VQA1.0}. The ASR serves to filter out noise in high dimensions and extract meaningful patterns in the form of text. In a sense, one can think of the ASR as a feature extractor, with text being the salient feature and an explicit intermediate standardization of data before the question answering module.
 
-It is worth noting that in contrast to the characteristics of the pipelined approach, SpeechMod does not include mechanisms that forces it to learn semantics in language, and the only data it learns from is the given dataset. \tz{Change it is worth noting, this paragraph sounds a bit discussion-like} Bearing in mind its simple architecture and limited amount of data, the performance gap of 7\% between SpeechMod and TextMod is within acceptable limits and merits further study into the end-to-end methods.
+Conversely, the only audio data SpeechMod learns from are the questions in the dataset. It does not include any mechanisms that explicitly learn semantics in a language, nor does it have intermediate data standardization. Thus, the model may not extract the concept of words from audio sounds. Whether or not forcing the system to learn words (i.e. transcribing words in the question and answering simultaneously) will be beneficial is left to future research, but it is evident that data standardization is helpful for unseen data.
 
-\tz{ZS reason why textmod is better?}
+In ZS experiments, the gap in performance between the unseen and full dataset with TextMod is much smaller than in SpeechMod (4\% vs 7\%). A text-based system can still glimpse the meaning of a question even if a word has never been seen, but from the perspective of SpeechMod, new words represent entirely different signal trajectories. Furthermore, audio inputs are continuous streams, making it difficult to differentiate when the new words begin or end. 
 
-Despite its limited sample size, the human-recorded dataset provides a few insights. The synthetic audio sounds monotonous, disinterested, with little silence in between words while the human recorded audio has inflections, emphasis, accents, and pauses. An inspection of the spectrograms (\Cref{fig:specs}) confirms this, as the synthetic waveforms contain have vastly different audio signatures. Because SpeechMod uses the waveforms as input directly and it has no training data similar to the human recorded samples, during prediction time it is unable to find salient patterns in the audio clips. By comparison, the pipelined approach has an ASR that is already trained with data containing lots of variance, so it is able to standardize the audio into a compact, salient textual representation before feeding it into TextMod. From the perspective of the text-based question answering system, its linguistic input is only slightly different than the original text it was trained on.
+A similar effect is amplified in answering human-recorded questions. The synthetic audio sounds monotonous, disinterested, with little silence between words while the human-recorded audio has inflections, emphasis, accents, and pauses. An inspection of the spectrograms (\Cref{fig:specs}) confirms this, as the synthetic waveforms have vastly different audio signatures. Because SpeechMod has no training data similar to the human-recorded samples, it is unable to extract salient patterns. In comparison, the ASR removes most of the variance in the input by standardizing the audio into a compact, salient textual representation. From the perspective of TextMod, the human-recorded questions is only slightly different than those provided in training.
 
-\tz{the same VQA paper is cited three times!!!}
+It is evident in our experiments that text-based VQA performs better than speech-based, but bearing in mind the simple architecture and limited amount of training data, we believe the results of SpeechMod merits further study into end-to-end methods.
 
 
 \subsection{Future Work}
+As alluded to in previous sections, there are a few research directions that may yield interesting results. One straightforward approach to improving the end-to-end model is by data augmentation. It is widely accepted that effectiveness of neural architectures is data driven, so training with noisy data and different speakers will make the model more robust to inputs during run time. Just as many possibilities exist in improving the architecture. One can add feature extractors, attention mechanisms, GAN training, or any amalgamation of the techniques in the deep learning mainstream. An interesting study would be to enforce the prediction of the question while simultaneously learning to answer the question. Doing so may improve performance, but more importantly allows us to interpret the concepts learned by the neural network.
 
-One straightforward approach to improving the end-to-end model is by data augmentation. It is widely accepted that effectiveness of neural architectures is data driven, so training with noisy data and different speakers will make the model more robust to inputs during run time. Just as many possibilities exist in improving the architecture. One can add feature extractors, attention mechanisms, or any amalgamation of the techniques in the deep learning mainstream.
+Another direction is to restrict the amount of training data available to both approaches to observe their learning efficiency. For example, minor languages may not have a reliable ASR. One can simulate a minor language by training an ASR with only the data available in the training set, and comparing this approach with the end-to-end method trained on the same amount of data.
 
-\tz{multiple speakers, more data}
 
 \section{Conclusion}
 
-We propose speech-based visual question answering and introduce two approaches that tackle this problem, one of which can be trained end-to-end on audio inputs. Despite its simple architecture, the end-to-end method works well when the test data has audio signatures comparable to its training data. Both methods suffer performance decreases at similar rates when noise is introduced. A pipelined method using an ASR tolerates varied inputs much better because it normalizes the input variance into text before running the VQA module. We release the speech dataset and invite the multimedia research community to explore the intersection of speech and vision.
+We have proposed speech-based visual question answering and introduced two approaches that tackle this problem, one of which can be trained end-to-end on audio inputs. Despite its simple architecture, the end-to-end method works well when the test data has audio signatures comparable to its training data. Both methods suffered performance decreases at similar rates when noise is introduced. A pipelined method using an ASR tolerates varied inputs much better because it normalizes the input variance into text before running the VQA module. We release the speech dataset and invite the multimedia research community to explore the intersection of speech and vision.
 
 \newpage
 \bibliographystyle{aaai}

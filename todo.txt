@@ -1,12 +1,6 @@
-#re-structure discussion/results sections for readability?
-#expand future work
-#related works section, use thesis? cut down?
-#emphasize focus in related works, or remove difference between our method and the leading methods
 #revise takeaway to be more neutral and less of an advocate
 #emphasize our focus is not to improve sota in VQA
 #reframe contribution and problem statement
 #reframe contribution in intro, abstract, conclusion, discussion
 #clean up, avoid weird phrases, etc.
-#change picture
-#remove 3 references to fit
 #make sure figures are aligned
