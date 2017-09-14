@@ -1,5 +1,4 @@
 #revise takeaway to be more neutral and less of an advocate
-#emphasize our focus is not to improve sota in VQA
 #reframe contribution and problem statement
 #reframe contribution in intro, abstract, conclusion, discussion
 #clean up, avoid weird phrases, etc.
