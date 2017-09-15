@@ -49,8 +49,26 @@
 \begin{document}
 \title{Speech-Based Visual Question Answering}
 % \author{Ted Zhang\\
+% KU Leuven\footnote{asda}\\
+% % tedz.cs@gmail.com
+% \And
+% Dengxin Dai\\
+% ETH Zurich\\
+% % dai@vision.ee.ethz.ch
+% \And
+% Tinne Tuytelaars\\
 % KU Leuven\\
-% tedz.cs@gmail.com}
+% % tinne.tuytelaars@esat.kuleuven.be
+% \And
+% Marie-Francine Moens\\
+% KU Leuven\\
+% % sien.moens@cs.kuleuven.be\\
+% \And
+% Luc Van Gool\\
+% ETH Zurich, KU Leuven\\
+% % vangool@vision.ee.ethz.ch
+% }
+
 
 % \author{Dengxin Dai}
 % \affiliation{%
@@ -144,7 +162,7 @@ Other points of research are based on the pooling mechanism that combines the la
 \subsection{Integration of Speech and Vision}
 The works also relevant to ours are those integrating speech and vision. Pixeltone \cite{pixel:tone}
 and Image spirit \cite{image:spirit} are examples that use voice
-commands to guide image processing and semantic segmentation. There is also academic work \cite{speech:anno:img,speech:retri:img} and an app \cite{smile} that use speech to provide image descriptions. Their tasks and algorithms are both different from ours. We study the potential of integrating speech and vision in the context of VQA and aim to learn a joint understanding of speech and vision. Those approaches, however, use speech recognition for data collection or result refinement.
+commands to guide image processing and semantic segmentation. There is also academic work \cite{show:tell,speech:anno:img,speech:retri:img} and an app \cite{smile} that use speech to provide image descriptions. Their tasks and algorithms are both different from ours. We study the potential of integrating speech and vision in the context of VQA and aim to learn a joint understanding of speech and vision. Those approaches, however, use speech recognition for data collection or result refinement.
 
 Our work also shares similarity with visual-grounded speech understanding or recognition. The closest one in this vein is \cite{speech:caption}, in which a deep model is learned with speeches about image captions for speech-based image retrieval. In a broader context of integration of sound and vision, Soundnet \cite{soundnet} transfers visual information into sound representations, but this differs from our work because their end goal is to label a sound, not to answer a question.
 
@@ -368,7 +386,7 @@ Where \textit{S} is the number of substitutions, \textit{D} is the number of del
 
 
 \subsection{Implementation}
-Keras was used to run all experiments, with the Adam optimizer \cite{kingma2014adam} for both architectures. No parameter tuning was done; the default Adam parameters are as follows: learning rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-08, learning  rate decay=0.0. Training TextMod for 10 epochs on \textit{train} + \textit{val} takes roughly an hour on a Nvidia Titan X GPU, and our best model was taken at 30 epochs. Training SpeechMod for 10 epochs takes roughly 7 hours. The reported model is taken at 30 epochs. The code is available to the public.\footnote{Will be provided after review, omitted to maintain anonymity}
+Keras was used to run all experiments, with the Adam \cite{kingma2014adam} optimizer for both architectures. No parameter tuning was done; default Adam parameters are as follows: learning rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-08, learning  rate decay=0.0. Training TextMod for 10 epochs on \textit{train} + \textit{val} takes roughly an hour on a Nvidia Titan X GPU, and our best model was taken at 30 epochs. Training SpeechMod for 10 epochs takes roughly 7 hours. The reported model is taken at 30 epochs. The code is available to the public.\footnote{https://github.com/zted/sbvqa}
 
 
 %%%%%
@@ -424,6 +442,7 @@ TextMod is trained on the original questions (\textit{OQ}), with the best perfor
 A graphical version of the table is shown in \Cref{fig:noiseplots}. The constant values of SpeechMod \textit{Blind} and TextMod \textit{Blind} are included to show the noise level at which they perform better than their full model counterparts. Examples of the two models answering questions from the dataset are shown in \Cref{fig:visual:examples}.
 
 One might imagine SpeechMod to perform better because of its direct optimization and end-to-end training solely for the task, yet this hypothesis does not hold true. At 0\% noise, TextMod achieves 7\% higher accuracy than SpeechMod. As noise is added, both models initially falter at similar rates, although their trends seem to head towards convergence. This is expected since, since at 100\% noise the question would not be audible at all; it would be random guessing, thus both methods would perform exactly the same.
+
 
 Next, we compare TextMod and SpeechMod against their respective \textit{Blind} models. The bias of questions in \textit{VQA1.0} is well documented. Namely, if the question is understood, there is a good chance of answering correctly without looking at the image (i.e. blind guessing). For example, \textit{Y/N} questions have the answer \emph{yes} more commonly than \emph{no}, so the system should guess \emph{yes} if a question is identified to be a \textit{Y/N} type. As a reference, always answering \emph{yes} yields a \textit{Y/N} accuracy of 70.81\% on \textit{test-dev}. The bias is clearly evident in both \textit{test-dev} and \textit{val} for TextMod and SpeechMod; the \textit{Y/N} section of \textit{Blind} always performs better than that of the 0\% data. Therefore, \textit{Blind} tells us how many questions are understood by these two modes of linguistic inputs. When comparing the linguistic only models with their complementary TextMod and SpeechMod, one can be certain that performances falling below the linguistic signifies that the model no longer understands the questions. Furthermore, perceiving the image and a noisy question becomes less informative than understanding a clean question without an image.
 
